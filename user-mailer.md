@@ -18,7 +18,7 @@ class UserMailer < ActionMailer::Base
 end
 ```
 
-[OK, and what does the html template for this email look like?](./recent-activity-email-template.md)
+**[OK, and what does the html template for this email look like?](./recent-activity-email-template.md)**
 
 ---
 
