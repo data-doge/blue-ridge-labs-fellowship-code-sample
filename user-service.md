@@ -15,9 +15,9 @@ class UserService
 end
 ```
 
-[ok sweet, how does `RecentActivityService` work?](./recent-activity-service.md)
+[OK sweet, how does `RecentActivityService` work?](./recent-activity-service.md)
 
-and now, [what is `UserMailer#recent_activity` doing?](./user-mailer.md)
+and also, [what is `UserMailer#recent_activity` doing?](./user-mailer.md)
 
 ---
 
