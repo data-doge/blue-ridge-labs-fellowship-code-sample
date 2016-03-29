@@ -16,7 +16,7 @@ class DeliverRecentActivityDigest
 end
 ```
 
-[how does `UserService#send_recent_activity_email(user: )` work?](./user-service.md)
+**[how does `UserService#send_recent_activity_email(user: )` work?](./user-service.md)**
 
 ---
 
