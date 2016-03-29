@@ -80,4 +80,4 @@ and here are the partials it is rendering:
 
 ---
 
-[OK! i understand how customized 'bundled recent activity' email notifications are sent out to Cobudget users, now take me back to the main README plz](./README.md)
+**[OK! i understand how customized 'bundled recent activity' email notifications are sent out to Cobudget users, now take me back to the main README plz](./README.md)**
