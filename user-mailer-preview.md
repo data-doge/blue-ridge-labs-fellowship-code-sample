@@ -108,4 +108,4 @@ end
 
 ---
 
-[cool! plz take me back to the `recent_activity` email template now](./recent-activity-email-template.md)
+**[cool! plz take me back to the `recent_activity` email template now](./recent-activity-email-template.md)**
