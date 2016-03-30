@@ -78,7 +78,7 @@ and here are the partials it is rendering:
 
 ![meow](http://i.imgur.com/mvwVqAr.png)
 
-### [and here's the mailer preview that rendered the email above](./user-mailer-preview.md)
+**[and here's the mailer preview that rendered the email above](./user-mailer-preview.md)**
 
 ---
 
