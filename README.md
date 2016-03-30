@@ -21,5 +21,7 @@ you can [view the pull request here](https://github.com/cobudget/cobudget-api/pu
   1. **[walkthrough: how customized email notifications are delivered to cobudget users](./cobudget-rake.md)**, and
 
   2. **[walkthrough: how users update their email notification settings](./subscription-trackers-controller.md)**
+  
+**note**: most of these walkthrough files will contain the subheadings *quick reference* and *relevant tests*. under the *quick reference* subheadings, you'll find snippets of files that the main piece of code references (in case you're curious). *relevant tests* is self-explanatory 
 
 i've picked this code sample, because it's fresh in my head, and because it's been a particularly interesting problem to solve. it's involved timezones, scheduled jobs, delayed jobs, event collection, subscriptions, efficient database queries, email notifications, and tests at the model-level, service-level, and controller-level.
