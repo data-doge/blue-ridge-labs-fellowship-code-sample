@@ -13,4 +13,4 @@ namespace :cobudget do
 end
 ```
 
-[how does `DeliverRecentActivityDigest#run!` work?](./deliver-recent-activity-digest.md)
+**[how does `DeliverRecentActivityDigest#run!` work?](./deliver-recent-activity-digest.md)**
