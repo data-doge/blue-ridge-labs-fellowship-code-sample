@@ -18,8 +18,8 @@ the UI design is still in progress, but the server-side code is done -- and that
 
 you can [view the pull request here](https://github.com/cobudget/cobudget-api/pull/129) if you like, but in case you don't want to sift through all the noise, i've prepared guided walkthroughs to explain this feature's two main server-side functions:
 
-  1. <a href="./cobudget-rake.md" style="color: red; font-weight: bold;">walkthrough: how customized email notifications are delivered to cobudget users</a> and
+  1. **[walkthrough: how customized email notifications are delivered to cobudget users](./cobudget-rake.md)**, and
 
-  2. <a href="./subscription-trackers-controller.md" style="color: red; font-weight: bold;">walkthrough: how users update their email notification settings</a>
+  2. **[walkthrough: how users update their email notification settings](./subscription-trackers-controller.md)**
 
 i've picked this code sample, because it's fresh in my head, and because it's been a particularly interesting problem to solve. it's involved timezones, scheduled jobs, delayed jobs, event collection, subscriptions, efficient database queries, email notifications, and tests at the model-level, service-level, and controller-level.

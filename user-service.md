@@ -17,13 +17,9 @@ class UserService
 end
 ```
 
-<a href="./recent-activity-service.md" style="color: red; font-weight: bold;">
-  OK sweet, how does `RecentActivityService` work?
-</a>
+**[OK sweet, how does `RecentActivityService` work?](./recent-activity-service.md)**
 
-<a href="./user-mailer.md" style="color: red; font-weight: bold;">
-  and also, what is `UserMailer#recent_activity` doing?
-</a>
+**and also, [what is `UserMailer#recent_activity` doing?](./user-mailer.md)**
 
 ---
 

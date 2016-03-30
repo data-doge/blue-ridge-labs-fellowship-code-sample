@@ -36,14 +36,9 @@ class SubscriptionTrackersController < AuthenticatedController
 end
 ```
 
-<a href="./updating-subscription-tracker-notification-frequency.md" style="color: red; font-weight: bold;">
-  updating these attributes is trivial -- but updating a `subscription_tracker`'s `notification_frequency` is a little interesting
-</a>
+updating these attributes is trivial -- **[but updating a `subscription_tracker`'s `notification_frequency` is a little interesting](./updating-subscription-tracker-notification-frequency.md)**
 
-
-<a href="./README.md" style="color: red; font-weight: bold;">
-  OK, i see how a user's email settings can be updated -- plz bring me back to the main README
-</a>
+**[OK, i see how a user's email settings can be updated -- plz bring me back to the main README](./README.md)**
 
 ---
 

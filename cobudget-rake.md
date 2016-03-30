@@ -13,6 +13,4 @@ namespace :cobudget do
 end
 ```
 
-<a href="./deliver-recent-activity-digest.md" style="color: red; font-weight: bold;">
-  OK! how does `DeliverRecentActivityDigest#run!` work?
-</a>
+**[how does `DeliverRecentActivityDigest#run!` work?](./deliver-recent-activity-digest.md)**

@@ -48,10 +48,7 @@ class SubscriptionTracker < ActiveRecord::Base
 end
 ```
 
-<a href="./subscription-trackers-controller.md" style="color: red; font-weight: bold;">
-  OK! i see how `bundled recent activity` notification emails are rescheduled when a user changes their preferred `notification_frequency`, now bring me back to the `SubscriptionTrackersController`
-</a>
-
+**[OK! i see how `bundled recent activity` notification emails are rescheduled when a user changes their preferred `notification_frequency`, now bring me back to the `SubscriptionTrackersController`](./subscription-trackers-controller.md)**
 
 ---
 

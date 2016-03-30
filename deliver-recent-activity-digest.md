@@ -18,7 +18,7 @@ class DeliverRecentActivityDigest
 end
 ```
 
-<a href="./user-service.md" style="color: red; font-weight: bold;">OK! how does `UserService#send_recent_activity_email` work?</a>
+**[OK! how does `UserService#send_recent_activity_email` work?](./user-service.md)**
 
 ---
 
