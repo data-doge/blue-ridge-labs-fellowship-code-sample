@@ -1,4 +1,4 @@
-*walkthrough: how customized email notifications are delivered to cobudget users - part3 / 5*
+*walkthrough: how customized email notifications are delivered to cobudget users - part 3 / 5*
 
 ### `UserService#send_recent_activity_email`
 

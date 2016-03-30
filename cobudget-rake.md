@@ -1,4 +1,4 @@
-*walkthrough: how customized email notifications are delivered to cobudget users - part1 / 5*
+*walkthrough: how customized email notifications are delivered to cobudget users - part 1 / 5*
 
 ### `rake cobudget:deliver_recent_activity_digest`
 

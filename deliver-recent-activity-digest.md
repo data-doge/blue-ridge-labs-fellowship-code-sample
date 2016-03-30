@@ -1,4 +1,4 @@
-*walkthrough: how customized email notifications are delivered to cobudget users - part2 / 5*
+*walkthrough: how customized email notifications are delivered to cobudget users - part 2 / 5*
 
 ### `DeliverRecentActivityDigest#run!`
 

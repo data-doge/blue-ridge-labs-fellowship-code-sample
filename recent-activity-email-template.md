@@ -1,4 +1,4 @@
-*walkthrough: how customized email notifications are delivered to cobudget users - part5 / 5*
+*walkthrough: how customized email notifications are delivered to cobudget users - part 5 / 5*
 
 #### `recent_activity.html.erb`
 
