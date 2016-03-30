@@ -145,7 +145,9 @@ class RecentActivityService
 end
 ```
 
-**[OK! now that i know how `RecentActivityService` prepares a hash of `activity` for a given user, i'm ready to go back to `UserService#send_recent_activity_email`](./user-service.md)**
+<a href="./user-service.md" style="color: red; font-weight: bold;">
+  OK! now that i know how `RecentActivityService` prepares a hash of `activity` for a given user, i'm ready to go back to `UserService#send_recent_activity_email`
+</a>
 
 ---
 

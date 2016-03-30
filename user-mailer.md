@@ -20,7 +20,9 @@ class UserMailer < ActionMailer::Base
 end
 ```
 
-**[OK, and what does the html template for this email look like?](./recent-activity-email-template.md)**
+<a href="./recent-activity-email-template.md" style="color: red; font-weight: bold;">
+  OK, and what does the html template for this email look like?
+</a>
 
 ---
 
