@@ -16,8 +16,7 @@ the UI design is still in progress, but the server-side code is done -- and that
 
 ### code sample
 
-you can [view the pull request here]([you can view ](https://github.com/cobudget/cobudget-api/pull/129)
-) if you like, but in case you don't want to sift through all the noise, i've prepared guided walkthroughs to explain this feature's two main server-side functions:
+you can [view the pull request here](https://github.com/cobudget/cobudget-api/pull/129) if you like, but in case you don't want to sift through all the noise, i've prepared guided walkthroughs to explain this feature's two main server-side functions:
 
   1. **[walkthrough: how customized email notifications are delivered to cobudget users](./cobudget-rake.md)**, and
 
