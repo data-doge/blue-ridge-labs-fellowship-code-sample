@@ -4,9 +4,9 @@ its a bundled 'recent activity' email notification system for [Cobudget](http://
 
 ### context:
 
-our designer, derek, has been thinking about how cobudget's email notification system should be like. [he came up with this](https://docs.google.com/document/d/15N5UqHo649pqzBoNN5r1hTubbtTRlCLsfH_RyfHIDDs/edit?usp=sharing)
+our designer, derek, has recently redesigned cobudget's email notification system. [he came up with this](https://docs.google.com/document/d/15N5UqHo649pqzBoNN5r1hTubbtTRlCLsfH_RyfHIDDs/edit?usp=sharing)
 
-in this system, users choose which events they wanna hear about, and how often they wanna hear about it.
+in this system, users choose which events they wanna hear about, and how often they wanna hear about it. they receive these notifications via email -- as 'bundles' of recent activity
 
 here's a GIF of the UI
 
