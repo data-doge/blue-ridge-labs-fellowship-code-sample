@@ -1,3 +1,5 @@
+*walkthrough: how customized email notifications are delivered to cobudget users - part3 / 5*
+
 ### `UserService#send_recent_activity_email`
 
 uses an instance of `RecentActivityService` to (1) check if a user has `recent_activity`, and (2) if they do, send an email to them

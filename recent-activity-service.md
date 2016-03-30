@@ -1,3 +1,5 @@
+*walkthrough: how customized email notifications are delivered to cobudget users - part 3a / 5*
+
 ### `RecentActivityService`
 
 checks to see what types of events a user is subscribed to, and prepares an `activity` `Hash` for each of the `user`s groups

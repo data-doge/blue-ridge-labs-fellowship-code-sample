@@ -1,3 +1,5 @@
+*walkthrough: how customized email notifications are delivered to cobudget users - part2 / 5*
+
 ### `DeliverRecentActivityDigest#run!`
 
 when called, goes through every user with active memberships who is due for a delivery, and (1) asks `UserService` to send them customized emails, and (2) schedule their next delivery

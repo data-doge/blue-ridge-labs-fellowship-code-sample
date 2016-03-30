@@ -1,3 +1,5 @@
+*walkthrough: how customized email notifications are delivered to cobudget users - part5a / 5*
+
 ### `UserMailerPreview`
 creates some fake `recent_activity` for a fake `user`, which can be viewed by visiting `http://localhost:3000/rails/mailers/recent_activity`
 

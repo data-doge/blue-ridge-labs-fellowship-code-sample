@@ -1,3 +1,5 @@
+*walkthrough: how customized email notifications are delivered to cobudget users - part5 / 5*
+
 #### `recent_activity.html.erb`
 
 the corresponding template for this email looks like this:

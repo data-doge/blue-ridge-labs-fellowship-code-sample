@@ -1,3 +1,5 @@
+*walkthrough: how users update their email notification settings - part 1a / 1*
+
 ### updating the `notification_frequency` of a user's `SubscriptionTracker`
 
 if a user changes their preferred `notification_frequency`, we want to schedule their next 'bundled recent activity' notification email, and set said email's 'time_range' for 'recent_activity' in accordance with their time zone. this is managed in the `SubscriptionTracker`'s `after_update` callback

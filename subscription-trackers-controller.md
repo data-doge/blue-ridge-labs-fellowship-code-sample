@@ -1,3 +1,5 @@
+*walkthrough: how users update their email notification settings - part 1 / 1*
+
 ### `SubscriptionTrackersController#update_email_settings`
 
 a signed-in user updates (1) the types of events they want to subscribe to, and (2) how often they want 'bundled recent activity' email notifications about those events, by making a `POST` request to `/subscription_trackers`. these requests are handled by the `SubscriptionTrackersController`
