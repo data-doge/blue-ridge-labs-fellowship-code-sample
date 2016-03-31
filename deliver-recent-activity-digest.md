@@ -18,7 +18,7 @@ class DeliverRecentActivityDigest
 end
 ```
 
-**[GOTO `UserMailer#recent_activity`](./user-mailer)**
+**[GOTO `UserMailer#recent_activity`](./user-mailer.md)**
 
 ---
 
