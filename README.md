@@ -2,11 +2,16 @@ hi bill, here's some code for a feature i'm finishing today
 
 its a bundled 'recent activity' email notification system for [Cobudget](http://cobudget.co/) [Beta](http://beta.cobudget.co/)
 
+**edit**: though all tests were passing in our test environment, when i pushed up to our staging server, emails weren't being sent. silly mistake of mine -- our test environment is configured to deliver emails synchronously, but our production environment is configured to enqueue requested email deliveries to be delivered asynchronously. and it turns out that enqueued method calls cannot accept ActiveRecord objects as parameters. i've updated the code to accommodate for this.
+
+
 ### context:
 
-our designer, derek, has been redesigning cobudget's email notification system and [has come up with this](https://docs.google.com/document/d/15N5UqHo649pqzBoNN5r1hTubbtTRlCLsfH_RyfHIDDs/edit?usp=sharing)
+our designer, derek, has recently redesigned cobudget's email notification system. [he came up with this](https://docs.google.com/document/d/15N5UqHo649pqzBoNN5r1hTubbtTRlCLsfH_RyfHIDDs/edit?usp=sharing).
 
-in this system, users choose which events they wanna hear about, and how often they wanna hear about it.
+the goal here is to notify users of group activity they care about without flooding their email.
+
+in this system, users choose which events they wanna hear about, and how often they wanna hear about it. they receive these notifications via email -- as 'bundles' of recent activity
 
 here's a GIF of the UI
 
@@ -22,6 +27,8 @@ you can [view the pull request here](https://github.com/cobudget/cobudget-api/pu
 
   2. **[walkthrough: how users update their email notification settings](./subscription-trackers-controller.md)**
 
-**as you go through the code you may find it helpful to reference this [entity-relationship diagram for cobudget](http://i.imgur.com/uniwvuQ.jpg)**
+you may find it helpful to have this [brief technical overview of cobudget](./brief-technical-overview) open in a separate window while reading through the walkthroughs.
+
+**note**: most of these walkthrough files will contain the subheadings *quick reference* and *relevant tests*. under the *quick reference* subheadings, you'll find snippets of files that the main piece of code references (in case you're curious). *relevant tests* is self-explanatory :)
 
 i've picked this code sample, because it's fresh in my head, and because it's been a particularly interesting problem to solve. it's involved timezones, scheduled jobs, delayed jobs, event collection, subscriptions, efficient database queries, email notifications, and tests at the model-level, service-level, and controller-level.
