@@ -1,4 +1,4 @@
-*walkthrough: how users update their email notification settings - part 1 / 1*
+*walkthrough: how users update their email notification settings - part 1(a) / 1*
 
 ### `SubscriptionTrackersController#update_email_settings`
 
