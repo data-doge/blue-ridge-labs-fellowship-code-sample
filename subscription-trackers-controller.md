@@ -38,7 +38,7 @@ end
 
 updating these attributes is trivial -- **[but updating a `subscription_tracker`'s `notification_frequency` is a little interesting](./updating-subscription-tracker-notification-frequency.md)**
 
-**[OK, i see how a user's email settings can be updated -- plz bring me back to the main README](./README.md)**
+**[OK, GOBACKHOME](./README.md)**
 
 ---
 
