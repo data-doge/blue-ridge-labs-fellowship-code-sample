@@ -1,4 +1,4 @@
-*walkthrough: how customized email notifications are delivered to cobudget users - part 1 / 5*
+*walkthrough: how customized email notifications are delivered to cobudget users - part 1 / 4*
 
 ### `rake cobudget:deliver_recent_activity_digest`
 
@@ -13,4 +13,4 @@ namespace :cobudget do
 end
 ```
 
-**[how does `DeliverRecentActivityDigest#run!` work?](./deliver-recent-activity-digest.md)**
+**[GOTO `DeliverRecentActivityDigest#run!`](./deliver-recent-activity-digest.md)**

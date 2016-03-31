@@ -1,32 +1,36 @@
-*walkthrough: how customized email notifications are delivered to cobudget users - part 4 / 5*
+*walkthrough: how customized email notifications are delivered to cobudget users - part 3(a) / 4*
 
 ### `UserMailer#recent_activity`
 
-here, we prepare the email for delivery
+here, we use `RecentActivityService` to fetch recent activity for the user. if there is any recent activity to report on, we prepare the email for delivery.
 
 ```rb
 class UserMailer < ActionMailer::Base
   ...
 
-  def recent_activity(user:, recent_activity:)
+  def recent_activity(user:)
     @user = user
-    @recent_activity = recent_activity
-    @last_fetched_at = @user.subscription_tracker.last_fetched_at_formatted
-    mail(to: user.name_and_email,
-         from: "Cobudget Updates <updates@cobudget.co>",
-         subject: "My recent activity on Cobudget - from #{@last_fetched_at}"
-    )
+    @recent_activity = RecentActivityService.new(user: user)
+    if @recent_activity.is_present?
+      @last_fetched_at = @user.subscription_tracker.last_fetched_at_formatted
+      mail(to: user.name_and_email,
+           from: "Cobudget Updates <updates@cobudget.co>",
+           subject: "My recent activity on Cobudget - from #{@last_fetched_at}"
+      )
+    end
   end
 end
 ```
 
-**[OK, and what does the html template for this email look like?](./recent-activity-email-template.md)**
+~~ **[first, GOTO `RecentActivityService`](./recent-activity-service.md)**
 
----
+~~ **[then, GOTO the html template that this mailer renders](./recent-activity-email-template.md)**
 
-### quick reference
+---                                                                                                                              
 
-#### `SubscriptionTracker`
+#### quick reference:
+
+##### SubscriptionTracker
 
 ```rb
 class SubscriptionTracker < ActiveRecord::Base
@@ -46,7 +50,7 @@ class SubscriptionTracker < ActiveRecord::Base
 end
 ```
 
-#### `User`
+##### User
 
 ```rb
 require 'securerandom'
@@ -67,9 +71,13 @@ end
 
 ---
 
-### relevant tests
+#### relevant tests:
 
-#### `SubscriptionTracker`
+##### UserMailer#recent_activity
+
+test coverage in specs for `DeliverRecentActivityDigest`
+
+##### SubscriptionTracker
 
 ![meow](http://i.imgur.com/eM6WWRV.png)
 

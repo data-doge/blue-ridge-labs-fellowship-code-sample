@@ -1,8 +1,8 @@
-*walkthrough: how customized email notifications are delivered to cobudget users - part 2 / 5*
+*walkthrough: how customized email notifications are delivered to cobudget users - part 2 / 4*
 
 ### `DeliverRecentActivityDigest#run!`
 
-when called, goes through every user with active memberships who is due for a delivery, and (1) asks `UserService` to send them customized emails, and (2) schedule their next delivery
+when called, goes through every user with active memberships, and if they are due for a delivery, it (1) asks `UserMailer` to send them a recent activity email, and (2) schedules the next delivery
 
 ```rb
 class DeliverRecentActivityDigest
@@ -10,7 +10,7 @@ class DeliverRecentActivityDigest
     current_time = DateTime.now.utc
     User.with_active_memberships.each do |user|
       if user.subscription_tracker.ready_to_fetch?(current_time: current_time)
-        UserService.send_recent_activity_email(user: user)
+        UserMailer.recent_activity(user: user).deliver_later
         user.subscription_tracker.update_next_fetch_time_range!
       end
     end
@@ -18,13 +18,13 @@ class DeliverRecentActivityDigest
 end
 ```
 
-**[OK! how does `UserService#send_recent_activity_email` work?](./user-service.md)**
+**[GOTO `UserMailer#recent_activity`](./user-mailer)**
 
 ---
 
-### quick reference
+#### quick reference
 
-#### `User`
+##### `User`
 
 ```rb
 require 'securerandom'
@@ -34,13 +34,11 @@ class User < ActiveRecord::Base
 
   after_create :create_default_subscription_tracker
 
-  has_many :groups, through: :memberships
-  has_many :memberships, foreign_key: "member_id", dependent: :destroy
+  ...
+
   has_one :subscription_tracker,                   dependent: :destroy
-  has_many :allocations,                           dependent: :destroy
-  has_many :comments,                              dependent: :destroy
-  has_many :contributions,                         dependent: :destroy
-  has_many :buckets,                               dependent: :destroy
+
+  ...
 
   scope :with_active_memberships, -> { joins(:memberships).where(memberships: {archived_at: nil}) }
 
@@ -52,14 +50,13 @@ class User < ActiveRecord::Base
     def create_default_subscription_tracker
       SubscriptionTracker.create(
         user: self,
-        notification_frequency: "hourly",
         recent_activity_last_fetched_at: DateTime.now.utc.beginning_of_hour
       )
     end
 end
 ```
 
-#### `SubscriptionTracker`
+##### `SubscriptionTracker`
 
 ```rb
 class SubscriptionTracker < ActiveRecord::Base
@@ -90,99 +87,112 @@ class SubscriptionTracker < ActiveRecord::Base
 end
 ```
 
-#### `schema`
-
-```rb
-create_table "subscription_trackers", force: :cascade do |t|
-  t.integer  "user_id",                                                               null: false
-  t.boolean  "comments_on_buckets_user_authored",                  default: true,     null: false
-  t.boolean  "comments_on_buckets_user_participated_in",           default: true,     null: false
-  t.boolean  "new_draft_buckets",                                  default: true,     null: false
-  t.boolean  "new_live_buckets",                                   default: true,     null: false
-  t.boolean  "new_funded_buckets",                                 default: true,     null: false
-  t.boolean  "contributions_to_live_buckets_user_authored",        default: true,     null: false
-  t.boolean  "contributions_to_live_buckets_user_participated_in", default: true,     null: false
-  t.boolean  "funded_buckets_user_authored",                       default: true,     null: false
-  t.datetime "recent_activity_last_fetched_at"
-  t.string   "notification_frequency",                             default: "hourly", null: false
-  t.datetime "created_at",                                                            null: false
-  t.datetime "updated_at",                                                            null: false
-end
-
-add_index "subscription_trackers", ["user_id"], name: "index_subscription_trackers_on_user_id", using: :btree
-
-create_table "users", force: :cascade do |t|
-  t.string   "email",                  default: "", null: false
-  t.string   "encrypted_password",     default: "", null: false
-  t.string   "reset_password_token"
-  t.datetime "reset_password_sent_at"
-  t.datetime "remember_created_at"
-  t.integer  "sign_in_count",          default: 0,  null: false
-  t.datetime "current_sign_in_at"
-  t.datetime "last_sign_in_at"
-  t.string   "current_sign_in_ip"
-  t.string   "last_sign_in_ip"
-  t.datetime "created_at"
-  t.datetime "updated_at"
-  t.string   "name"
-  t.text     "tokens"
-  t.string   "provider"
-  t.string   "uid"
-  t.string   "confirmation_token"
-  t.integer  "utc_offset"
-  t.datetime "confirmed_at"
-  t.datetime "joined_first_group_at"
-end
-```
 
 ---
 
-### relevant tests
+#### relevant tests
 
-#### `DeliverRecentActivityDigest`
+##### `DeliverRecentActivityDigest`
 
-![meow](http://i.imgur.com/YSr3gYl.png)
+![meow](http://i.imgur.com/nKisJq1.png)
 
 ```rb
 require 'rails_helper'
 
 describe "DeliverRecentActivityDigest" do
-  after { Timecop.return }
+  let!(:current_time) { DateTime.now.utc }
+  let!(:user) { create(:user) }
+  let!(:subscription_tracker) { user.subscription_tracker }
+
+  before do
+    subscription_tracker.update(notification_frequency: "hourly")
+    subscription_tracker.update(recent_activity_last_fetched_at: current_time - 1.hour)
+  end
+
+  after do
+    Timecop.return
+    ActionMailer::Base.deliveries.clear
+  end
 
   describe "#run!" do
-    before { allow(UserService).to receive(:send_recent_activity_email) }
-
     context "user has no active memberships" do
-      before { create(:user) }
+      it "does not send a recent activity notification email to the user" do
+        Timecop.freeze(current_time + 1.minute) do
+          DeliverRecentActivityDigest.run!
+          expect(ActionMailer::Base.deliveries).to be_empty
+        end
+      end
 
-      it "does nothing" do
-        expect(UserService).not_to receive(:send_recent_activity_email)
-        DeliverRecentActivityDigest.run!
+      it "does not schedule the next recent activity fetch" do
+        Timecop.freeze(current_time + 1.minute) do
+          DeliverRecentActivityDigest.run!
+          expect(subscription_tracker.reload.recent_activity_last_fetched_at).to eq(current_time - 1.hour)
+        end
       end
     end
 
     context "user has at least one active membership" do
-      before { make_user_group_member }
+      let!(:group) { create(:group) }
+      let!(:membership) { create(:membership, member: user, group: group) }
 
       context "current_time is before user's next scheduled fetch" do
-        it "does nothing" do
-          time = (user.subscription_tracker.next_recent_activity_fetch_scheduled_at - 1.minute).utc
-          Timecop.freeze(time) do
-            expect(UserService).not_to receive(:send_recent_activity_email)
+        it "does not send a recent activity notification email to the user" do
+          Timecop.freeze(current_time - 1.minute) do
             DeliverRecentActivityDigest.run!
+            expect(ActionMailer::Base.deliveries).to be_empty
+          end
+        end
+
+        it "does not schedule the next recent activity fetch" do
+          Timecop.freeze(current_time - 1.minute) do
+            DeliverRecentActivityDigest.run!
+            expect(subscription_tracker.reload.recent_activity_last_fetched_at).to eq(current_time - 1.hour)
           end
         end
       end
 
       context "current_time is after user's next scheduled fetch" do
-        it "calls fetches activity for user and updates their subscription_tracker's next fetch_time_range" do
-          old_next_recent_activity_scheduled_at = user.subscription_tracker.next_recent_activity_fetch_scheduled_at
+        context "recent activity exists" do
+          before do
+            Timecop.freeze(current_time - 1.minute) do
+              create(:bucket, group: group, status: "draft", name: "le bucket", user: user)
+            end
+          end
 
-          time = (old_next_recent_activity_scheduled_at + 1.minute).utc
-          Timecop.freeze(time) do
-            expect(UserService).to receive(:send_recent_activity_email)
-            DeliverRecentActivityDigest.run!
-            expect(user.subscription_tracker.reload.recent_activity_last_fetched_at).to eq(old_next_recent_activity_scheduled_at)
+          it "sends a recent activity notification email to the user" do
+            Timecop.freeze(current_time + 1.minute) do
+              DeliverRecentActivityDigest.run!
+              expect(ActionMailer::Base.deliveries.length).to eq(1)
+
+              sent_email = ActionMailer::Base.deliveries.first
+
+              expect(sent_email.to).to include(user.email)
+              expect(sent_email.subject).to include("My recent activity on Cobudget")
+              expect(sent_email.body).to include("le bucket")
+            end
+          end
+
+          it "updates user's subscription_tracker's recent_activity_last_fetched_at timestamp" do
+            Timecop.freeze(current_time + 1.minute) do
+              DeliverRecentActivityDigest.run!
+              expect(subscription_tracker.reload.recent_activity_last_fetched_at).to eq(current_time)
+            end
+          end
+        end
+
+        context "recent activity does not exist" do
+          it "does not send a recent activity notification email to the user" do
+            Timecop.freeze(current_time + 1.minute) do
+              DeliverRecentActivityDigest.run!
+              expect(ActionMailer::Base.deliveries).to be_empty
+            end
+          end
+
+          it "updates user's subscription_tracker's recent_activity_last_fetched_at timestamp" do
+            Timecop.freeze(current_time + 1.minute) do
+              DeliverRecentActivityDigest.run!
+              expect(subscription_tracker.reload.recent_activity_last_fetched_at).to eq(current_time)
+            end
           end
         end
       end
@@ -191,7 +201,7 @@ describe "DeliverRecentActivityDigest" do
 end
 ```
 
-#### `SubscriptionTracker`
+##### `SubscriptionTracker`
 
 ![meow](http://i.imgur.com/4o0kjoD.png)
 

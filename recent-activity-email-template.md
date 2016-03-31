@@ -1,4 +1,4 @@
-*walkthrough: how customized email notifications are delivered to cobudget users - part 5 / 5*
+*walkthrough: how customized email notifications are delivered to cobudget users - part 4 / 4*
 
 #### `recent_activity.html.erb`
 
@@ -82,4 +82,4 @@ and here are the partials it is rendering:
 
 ---
 
-**[OK! i understand how customized 'bundled recent activity' email notifications are sent out to Cobudget users, now take me back to the main README plz](./README.md)**
+**[and that's all! now, GOBACKHOME](./README.md)**

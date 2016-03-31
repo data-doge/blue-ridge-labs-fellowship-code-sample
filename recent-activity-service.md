@@ -1,8 +1,8 @@
-*walkthrough: how customized email notifications are delivered to cobudget users - part 3a / 5*
+*walkthrough: how customized email notifications are delivered to cobudget users - part 3(b) / 4*
 
 ### `RecentActivityService`
 
-checks to see what types of events a user is subscribed to, and prepares an `activity` `Hash` for each of the `user`s groups
+when requested, this service returns an `activity` `Hash` containing all new activity in a user's group since the last time activity was fetched for them. it only returns activity that the user has subscribed to.
 
 ```rb
 class RecentActivityService
@@ -145,13 +145,13 @@ class RecentActivityService
 end
 ```
 
-**[OK! now that i know how `RecentActivityService` prepares a hash of `activity` for a given user, i'm ready to go back to `UserService#send_recent_activity_email`](./user-service.md)**
+**[GOBACKTO: `UserMailer#recent_activity`](./user-mailer.md)**
 
 ---
 
-### quick reference
+#### quick reference
 
-#### `User`
+##### `User`
 
 ```rb
 require 'securerandom'
@@ -159,15 +159,7 @@ require 'securerandom'
 class User < ActiveRecord::Base
   ...
 
-  after_create :create_default_subscription_tracker
-
-  has_many :groups, through: :memberships
-  has_many :memberships, foreign_key: "member_id", dependent: :destroy
   has_one :subscription_tracker,                   dependent: :destroy
-  has_many :allocations,                           dependent: :destroy
-  has_many :comments,                              dependent: :destroy
-  has_many :contributions,                         dependent: :destroy
-  has_many :buckets,                               dependent: :destroy
 
   ...
 
@@ -175,20 +167,11 @@ class User < ActiveRecord::Base
     Group.joins(:memberships).where(memberships: {member: self, archived_at: nil})
   end
 
-  private
-    ...
-
-    def create_default_subscription_tracker
-      SubscriptionTracker.create(
-        user: self,
-        notification_frequency: "hourly",
-        recent_activity_last_fetched_at: DateTime.now.utc.beginning_of_hour
-      )
-    end
+  ...
 end
 ```
 
-#### `SubscriptionTracker`
+##### `SubscriptionTracker`
 
 ```rb
 class SubscriptionTracker < ActiveRecord::Base
@@ -219,128 +202,11 @@ class SubscriptionTracker < ActiveRecord::Base
 end
 ```
 
-#### `schema`
-
-```rb
-ActiveRecord::Schema.define(version: 20160329050826) do
-
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
-  ...
-
-  create_table "buckets", force: :cascade do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "name"
-    t.text     "description"
-    t.integer  "user_id"
-    t.integer  "target"
-    t.integer  "group_id"
-    t.string   "status",            default: "draft"
-    t.datetime "funding_closes_at"
-    t.datetime "funded_at"
-    t.datetime "live_at"
-  end
-
-  add_index "buckets", ["group_id"], name: "index_buckets_on_group_id", using: :btree
-  add_index "buckets", ["user_id"], name: "index_buckets_on_user_id", using: :btree
-
-  create_table "comments", force: :cascade do |t|
-    t.text     "body",       null: false
-    t.integer  "user_id"
-    t.integer  "bucket_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "comments", ["bucket_id"], name: "index_comments_on_bucket_id", using: :btree
-  add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
-
-  create_table "contributions", force: :cascade do |t|
-    t.integer  "user_id"
-    t.integer  "bucket_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "amount",     null: false
-  end
-
-  add_index "contributions", ["bucket_id"], name: "index_contributions_on_bucket_id", using: :btree
-  add_index "contributions", ["user_id"], name: "index_contributions_on_user_id", using: :btree
-
-  ...
-
-  create_table "groups", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "currency_symbol", default: "$"
-    t.string   "currency_code",   default: "USD"
-  end
-
-  create_table "memberships", force: :cascade do |t|
-    t.integer  "group_id",                    null: false
-    t.integer  "member_id",                   null: false
-    t.boolean  "is_admin",    default: false, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.datetime "archived_at"
-  end
-
-  add_index "memberships", ["group_id"], name: "index_memberships_on_group_id", using: :btree
-  add_index "memberships", ["member_id"], name: "index_memberships_on_member_id", using: :btree
-
-  create_table "subscription_trackers", force: :cascade do |t|
-    t.integer  "user_id",                                                               null: false
-    t.boolean  "comments_on_buckets_user_authored",                  default: true,     null: false
-    t.boolean  "comments_on_buckets_user_participated_in",           default: true,     null: false
-    t.boolean  "new_draft_buckets",                                  default: true,     null: false
-    t.boolean  "new_live_buckets",                                   default: true,     null: false
-    t.boolean  "new_funded_buckets",                                 default: true,     null: false
-    t.boolean  "contributions_to_live_buckets_user_authored",        default: true,     null: false
-    t.boolean  "contributions_to_live_buckets_user_participated_in", default: true,     null: false
-    t.boolean  "funded_buckets_user_authored",                       default: true,     null: false
-    t.datetime "recent_activity_last_fetched_at"
-    t.string   "notification_frequency",                             default: "hourly", null: false
-    t.datetime "created_at",                                                            null: false
-    t.datetime "updated_at",                                                            null: false
-  end
-
-  add_index "subscription_trackers", ["user_id"], name: "index_subscription_trackers_on_user_id", using: :btree
-
-  create_table "users", force: :cascade do |t|
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
-    t.string   "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip"
-    t.string   "last_sign_in_ip"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "name"
-    t.text     "tokens"
-    t.string   "provider"
-    t.string   "uid"
-    t.string   "confirmation_token"
-    t.integer  "utc_offset"
-    t.datetime "confirmed_at"
-    t.datetime "joined_first_group_at"
-  end
-
-  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
-end
-```
-
 ---
 
-### relevant tests
+#### relevant tests
 
-#### `RecentActivityService`
+##### `RecentActivityService`
 
 ![meow](http://i.imgur.com/faCZn7W.png)
 

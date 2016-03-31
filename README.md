@@ -4,7 +4,7 @@ its a bundled 'recent activity' email notification system for [Cobudget](http://
 
 ### context:
 
-our designer, derek, has been thinking about how cobudget's email notification system should be like. [he came up with this](https://docs.google.com/document/d/15N5UqHo649pqzBoNN5r1hTubbtTRlCLsfH_RyfHIDDs/edit?usp=sharing)
+our designer, derek, has been redesigning cobudget's email notification system and [has come up with this](https://docs.google.com/document/d/15N5UqHo649pqzBoNN5r1hTubbtTRlCLsfH_RyfHIDDs/edit?usp=sharing)
 
 in this system, users choose which events they wanna hear about, and how often they wanna hear about it.
 
@@ -21,5 +21,7 @@ you can [view the pull request here](https://github.com/cobudget/cobudget-api/pu
   1. **[walkthrough: how customized email notifications are delivered to cobudget users](./cobudget-rake.md)**, and
 
   2. **[walkthrough: how users update their email notification settings](./subscription-trackers-controller.md)**
+
+**as you go through the code you may find it helpful to reference this [entity-relationship diagram for cobudget](http://i.imgur.com/uniwvuQ.jpg)**
 
 i've picked this code sample, because it's fresh in my head, and because it's been a particularly interesting problem to solve. it's involved timezones, scheduled jobs, delayed jobs, event collection, subscriptions, efficient database queries, email notifications, and tests at the model-level, service-level, and controller-level.
