@@ -27,7 +27,7 @@ you can [view the pull request here](https://github.com/cobudget/cobudget-api/pu
 
   2. **[walkthrough: how users update their email notification settings](./subscription-trackers-controller.md)**
 
-you may find it helpful to have this [brief technical overview of cobudget](./brief-technical-overview) open in a separate window while reading through the walkthroughs.
+you may find it helpful to have this [brief technical overview of cobudget](./brief-technical-overview.md) open in a separate window while reading through the walkthroughs.
 
 **note**: most of these walkthrough files will contain the subheadings *quick reference* and *relevant tests*. under the *quick reference* subheadings, you'll find snippets of files that the main piece of code references (in case you're curious). *relevant tests* is self-explanatory :)
 
