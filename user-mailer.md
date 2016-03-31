@@ -22,9 +22,9 @@ class UserMailer < ActionMailer::Base
 end
 ```
 
-~~ **[first, GOTO `RecentActivityService`](./recent-activity-service.md)**
+**[first, GOTO `RecentActivityService`](./recent-activity-service.md)**
 
-~~ **[then, GOTO the html template that this mailer renders](./recent-activity-email-template.md)**
+**[then, GOTO the html template that this mailer renders](./recent-activity-email-template.md)**
 
 ---                                                                                                                              
 
