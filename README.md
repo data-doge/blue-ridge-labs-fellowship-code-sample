@@ -2,7 +2,7 @@ hi bill, here's some code for a feature i'm finishing today
 
 its a bundled 'recent activity' email notification system for [Cobudget](http://cobudget.co/) [Beta](http://beta.cobudget.co/)
 
-**edit [03-31-16]**: though all tests were passing in our test environment, when i pushed up to our staging server, emails weren't being sent. silly mistake of mine -- our test environment is configured to deliver emails synchronously, but our production environment is configured to enqueue requested email deliveries to be delivered asynchronously. and it turns out that enqueued method calls cannot accept ActiveRecord objects as parameters. i've updated the code to accommodate for this.
+**edit [03-31-16]**: though all tests were passing in our test environment, when i pushed up to our staging server, emails weren't being sent. silly mistake of mine -- our test environment is configured to deliver emails synchronously, but our production environment is configured to enqueue requested email deliveries to be delivered asynchronously. and it turns out that enqueued method calls cannot accept ActiveRecord objects as parameters. i've updated the code to accommodate for this. i've also done some rewording and added a brief technical overview to make the walkthroughs easier to walk through.
 
 
 ### context:
