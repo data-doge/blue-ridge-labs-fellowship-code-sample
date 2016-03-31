@@ -1,4 +1,4 @@
-*walkthrough: how users update their email notification settings - part 1a / 1*
+*walkthrough: how users update their email notification settings - part 1(b) / 1*
 
 ### updating the `notification_frequency` of a user's `SubscriptionTracker`
 
@@ -48,40 +48,7 @@ class SubscriptionTracker < ActiveRecord::Base
 end
 ```
 
-**[OK! i see how `bundled recent activity` notification emails are rescheduled when a user changes their preferred `notification_frequency`, now bring me back to the `SubscriptionTrackersController`](./subscription-trackers-controller.md)**
-
----
-
-### quick reference
-
-#### `schema`
-
-```rb
-ActiveRecord::Schema.define(version: 20160329050826) do
-  ...
-
-  create_table "subscription_trackers", force: :cascade do |t|
-    t.integer  "user_id",                                                               null: false
-    t.boolean  "comments_on_buckets_user_authored",                  default: true,     null: false
-    t.boolean  "comments_on_buckets_user_participated_in",           default: true,     null: false
-    t.boolean  "new_draft_buckets",                                  default: true,     null: false
-    t.boolean  "new_live_buckets",                                   default: true,     null: false
-    t.boolean  "new_funded_buckets",                                 default: true,     null: false
-    t.boolean  "contributions_to_live_buckets_user_authored",        default: true,     null: false
-    t.boolean  "contributions_to_live_buckets_user_participated_in", default: true,     null: false
-    t.boolean  "funded_buckets_user_authored",                       default: true,     null: false
-    t.datetime "recent_activity_last_fetched_at"
-    t.string   "notification_frequency",                             default: "hourly", null: false
-    t.datetime "created_at",                                                            null: false
-    t.datetime "updated_at",                                                            null: false
-  end
-
-  add_index "subscription_trackers", ["user_id"], name: "index_subscription_trackers_on_user_id", using: :btree
-
-  ...
-end
-
-```
+**[GOBACKTO: `SubscriptionTrackersController`](./subscription-trackers-controller.md)**
 
 ---
 
